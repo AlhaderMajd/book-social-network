@@ -1,5 +1,7 @@
 package com.alhader.book.user;
 
+import com.alhader.book.book.Book;
+import com.alhader.book.history.BookTransactionHistory;
 import com.alhader.book.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,6 +43,12 @@ public class User implements UserDetails, Principal {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Book> books;
+
+    @OneToMany(mappedBy = "user")
+    private List<BookTransactionHistory> bookTransactionHistories;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
