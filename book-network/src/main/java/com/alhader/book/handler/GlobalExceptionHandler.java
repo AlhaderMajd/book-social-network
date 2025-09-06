@@ -1,5 +1,6 @@
 package com.alhader.book.handler;
 
+import com.alhader.book.exception.OperationNotPermittedException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +65,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExcptionResponse> handleException(MessagingException ex) {
         return ResponseEntity
                 .status(INTERNAL_SERVER_ERROR)
+                .body(
+                        ExcptionResponse.builder()
+                                .error(ex.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(OperationNotPermittedException.class)
+    public ResponseEntity<ExcptionResponse> handleException(OperationNotPermittedException ex) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
                 .body(
                         ExcptionResponse.builder()
                                 .error(ex.getMessage())
